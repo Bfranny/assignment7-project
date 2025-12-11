@@ -1,10 +1,20 @@
 FROM fedora:latest
-RUN useradd collin
-RUN dnf install -y httpd && dnf clean all
-RUN mkdir /structure && chmod 777 /structure
+
+RUN dnf install -y httpd
+
+RUN mkdir /structure && chmod 777 /structure && useradd collin
+
+RUN echo "Containers are easy!" > /var/www/html/index.html
+
 RUN mkdir /structure/sync-work && chown sync:root /structure/sync-work
+
 RUN mkdir /structure/nobody-work && chown nobody:nobody /structure/nobody-work
-RUN mkdir -p /var/www/html \
-    && echo "Containers are easy!" > /var/www/html/index.html
-EXPOSE 80
+
+USER root
+EXPOSE 80/tcp
 ENTRYPOINT ["/usr/sbin/httpd", "-DFOREGROUND"]
+
+
+
+
+
